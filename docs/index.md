@@ -63,11 +63,11 @@ $$
 
 This equation is represented by the five-point stencil with the highlighted nodes in the  previous figure. It implies that the hydraulic head at point $$ (x_i,y_j) $$ is obtained by averaging the values of neighboring points. The system of equation can now be derived for arbitrarily chosen grid mesh.
 
-#### Solution for $$ N_x = N_y = 4 $$
+#### **Solution for $$ N_x = N_y = 4 $$**
 
 Consider a $$ 1~\mathrm{m} \times 1~\mathrm{m} $$ grid divided into an equal number of elements $$ N_x = N_y = 4 $$ in both directions ($$ N_x+1 = N_y+1 = 5 $$ nodes in both directions) as shown in the figure below. The grid involves 25 nodes which are numbered as shown in the figure.
 
--> ![2D 4x4 grid](assets/images/2D_4x4_grid.png) <-
+![2D 4x4 grid](assets/images/2D_4x4_grid.png)
 
 Let's assume that the following boundary conditions are defined for the hydraulic head (in arbitrary units):
 
