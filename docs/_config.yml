@@ -1,0 +1,7 @@
+theme: jekyll-theme-cayman
+title: Finite Difference Method
+description: Application to Steady-state Flow in 2D
+highlighter: rouge
+kramdown:
+    math_engine: mathjax
+    syntax_highlighter: rouge
