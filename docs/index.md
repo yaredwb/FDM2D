@@ -14,6 +14,7 @@ where the parameters are as described in the one-dimensional case. If the permea
 $$
 \frac{\partial^2 h}{\partial x^2} + \frac{\partial^2 h}{\partial y^2} = 0
 $$
+
 which is a form of the well-know Laplace equation.
 
 ### **Spatial Discretization**
