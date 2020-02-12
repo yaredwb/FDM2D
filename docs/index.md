@@ -16,7 +16,7 @@ $$
 $$
 which is a form of the well-know Laplace equation.
 
-### Spatial Discretization
+### **Spatial Discretization**
 
 The first step is to spatially discretize the domain over which we aim to solve the problem and define the boundary conditions. A typical 2D discretization is shown in the figure below where the two-dimensional domain is discretized with a uniform grid mesh i.e. $$ \Delta x = \Delta y $$.
 
@@ -34,7 +34,7 @@ $$
 h(x_i,y_j) = h_{i,j}  
 $$
 
-for $$ i=0,1,\cdots,N_x $$ and $$ j=0,1,\cdots,N_y $$. The boundary conditions are specified on some edges of the domain. For example, if the head values are known to be $$ \bar{h}_1 $$ along $$ x=0 $$ and $$ x=L_x $ and $ \bar{h}_2 $$ along $$ y=0 $$ and $$ y=L_y $$, we write
+for $$ i=0,1,\cdots,N_x $$ and $$ j=0,1,\cdots,N_y $$. The boundary conditions are specified on some edges of the domain. For example, if the head values are known to be $$ \bar{h}_1 $$ along $$ x=0 $$ and $$ x=L_x $$ and $$ \bar{h}_2 $$ along $$ y=0 $$ and $$ y=L_y $$, we write
 
 $$
 h_{0,j} = h_{N,j} = \bar{h}_1 \quad \text{and} \quad h_{i,0} = h_{i,N} = \bar{h}_2
@@ -109,3 +109,133 @@ The boundary conditions imply the hydraulic head values are $$ h = 0 $$ for node
 	h_{14} + h_{18} - 4h_{19} &= -10
 	\end{align}
   $$
+
+The 9 equations for the 9 unknowns can be written in matrix form as
+
+$$
+\left[ \begin{array}{ccc|ccc|ccc}
+-4 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+1 & -4 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 1 & -4 & 0 & 0 & 1 & 0 & 0 & 0 \\
+\hline 
+1 & 0 & 0 & 1 & -4 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 1 & -4 & 1 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 1 & -4 & 0 & 0 & 1 \\
+\hline
+0 & 0 & 0 & 1 & 0 & 0 & -4 & 1 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 1 & -4 & 1 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & -4 \\   
+\end{array} \right]
+\left\lbrace
+\begin{matrix}
+h_7 \\ h_8 \\ h_9 \\ h_{12} \\ h_{13} \\ h_{14} \\ h_{17} \\ h_{18} \\ h_{19}
+\end{matrix}
+\right\rbrace = 
+\left\lbrace
+\begin{matrix}
+0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ -10 \\ -10 \\ -10
+\end{matrix}
+\right\rbrace 
+$$
+
+which is a linear system of the form $$ \bm A \bm x = \bm b $$. A closer inspection of the coefficient matrix $ \bm A $ shows that it has a block matrix structure of the form
+
+$$
+\left[ \begin{array}{c|c|c}
+\bm B & \bm I & \textbf{O} \\
+\hline
+\bm I & \bm B & \bm I \\
+\hline
+\textbf{O} & \bm I & \bm B \\ 
+\end{array} \right] 
+$$
+
+where
+
+$$
+\bm B = \left[ \begin{array}{ccc}
+-4 & 1 & 0 \\
+1 & -4 & 1 \\
+0 & 1 & -4
+\end{array} \right] \qquad \text{and} \qquad
+\bm I = \left[ \begin{array}{ccc}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{array} \right]   
+$$
+
+and $$ \textbf{O} $$ is a zero matrix. Solving the system of equations above gives the solution vector 
+
+$$
+\left\lbrace 0.71 \;\; 0.98 \;\; 0.71 \;\; 1.88 \;\; 2.50 \;\; 1.88 \;\; 4.29 \;\; 5.27 \;\; 4.29  \right\rbrace^\intercal 
+$$
+
+Combining these values with the boundary conditions, the final nodal hydraulic heads can be written in full as
+
+$$
+\left[ \begin{matrix}
+10 & 10 & 10 & 10 & 10 \\
+0 & 4.29 & 5.27 & 4.29 & 0 \\
+0 & 1.88 & 2.50 & 1.88 & 0 \\
+0 & 0.71 & 0.98 & 0.71 & 0 \\
+0 & 0 & 0 & 0 & 0 
+\end{matrix} \right] 
+$$
+
+A two-dimensional color contour plot of this solution is shown in the figure below with 10 contour levels and and linear interpolation between neighboring nodes.
+
+![Solution for a 4x4 grid](assets/images/Solution_for_4x4_grid.png)
+
+#### **Solution for an $$ N_x \times N_y $$ grid**
+
+In general, we want to obtain a solution on an arbitrarily discretized grid. Let the domain be discretized into $$ N_x \times N_y $$ elements ($$ (N_x + 1) \times (N_y + 1) $$ nodes) where $$ N_x $$ and $$ N_y $$ are chosen such that $$ \Delta x = \Delta y $$ i.e. a uniform grid. The coefficient matrix $$ \bm A $$ will have a similar block structure as described in the previous section but with more element matrices $$ \bm B $$ and $$ \bm I $$. The size of matrix $$ \bm A $$ will be $$ (N_x-1)^2 \times (N_y-1)^2 $$ and its block form may be written as
+
+$$
+\bm A = \left[ \begin{array}{c|c|c|c|c}
+\bm B & \bm I & \textbf{O} & \cdots & \textbf{O} \\
+\hline
+\bm I & \bm B & \bm I & \ddots & \vdots \\
+\hline
+\textbf{O} & \bm I & \ddots & \ddots & \textbf{O} \\
+\hline
+\vdots & \ddots & \ddots & \bm B & \bm I \\
+\hline
+\textbf{O} & \cdots & \textbf{O} & \bm I & \bm B \\
+\end{array} \right]
+$$
+
+The sizes of the matrices $$ \bm B $$ and $$ \bm I $$ change depending on the selected $$ N_x $$ and $$ N_y $$ values. For the particular example considered here where the boundary conditions are known along the four boundaries, the matrices $$ \bm B $$ and $$ \bm I $$ will have sizes of $$ (N_x - 1) \times (N_y - 1) $$ and may be written as
+
+$$
+\bm B = \left[ \begin{array}{ccccc}
+-4 & 1 & 0 & \cdots & 0 \\
+1 & -4 & 1 & \ddots  & \vdots  \\
+0 & \ddots & \ddots & \ddots & 0 \\
+\vdots & \ddots & 1 & -4 & 1 \\
+0 & \cdots & 0 & 1 & -4
+\end{array} \right] \quad \text{and} \quad
+\bm I = \left[ \begin{array}{ccccc}
+1 & 0 & \cdots & \cdots & 0 \\
+0 & 1 & \ddots &  & \vdots \\
+\vdots & \ddots & \ddots & \ddots & \vdots \\
+\vdots &  & \ddots & 1 & 0 \\
+0 & \cdots & \cdots & 0 & 1
+\end{array} \right]   
+$$
+
+The right hand side vector $$ \bm b $$ will have a size of $$ (N_x-1)^2 $$ for this particular case. Following a similar node numbering convention as described earlier, the vector $$ \bm b $$ may be written as
+
+$$
+\bm b = \left\lbrace \begin{matrix}
+0 & 0 & \cdots & 0 & -10 & \cdots & -10
+\end{matrix} \right\rbrace^\intercal
+$$
+
+where $$ (N_x + 1) $$ nodes at the top boundary have a hydraulic head value of $$ h=10 $$. With $$ \bm A $$ and $$ \bm b $$ constructed for given $$ N_x $$ and $$ N_y $$ values, the linear system can be solved for the hydraulic heads at the unknown nodes. The follwing figures show the color contour plots for grid sizes of $ 10 \times 10 $, $ 50 \times 50 $ and $ 100 \times 100 $, respectively.
+
+![Solution for a 10x10 grid](assets/images/Solution_for_10x10_grid.png)
+
+![Solution for a 50x50 grid](assets/images/Solution_for_50x50_grid.png)
+
+![Solution for a 100x100 grid](assets/images/Solution_for_100x100_grid.png)
