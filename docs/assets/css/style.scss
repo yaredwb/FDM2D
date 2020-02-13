@@ -4,6 +4,7 @@
 @import "{{ site.theme }}";
 .center-image
 {
-    margin: 0 auto;
-    display: block;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

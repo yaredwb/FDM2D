@@ -21,7 +21,7 @@ which is a form of the well-know Laplace equation.
 
 The first step is to spatially discretize the domain over which we aim to solve the problem and define the boundary conditions. A typical 2D discretization is shown in the figure below where the two-dimensional domain is discretized with a uniform grid mesh i.e. $$ \Delta x = \Delta y $$.
 
-![2D grid](assets/images/2D_grid.png)
+![2D grid](assets/images/2D_grid.png){: .center-image }
 
 This is achieved by dividing the $$ x $$ and $$ y $$ directions into $$ N_x $$ and $$ N_y $$ number of elements, where for a square domain we have $$ N = N_x = N_y $$. In general, if $$ L_x $$ and $$ L_y $$ represent the dimensions in the $$ x $$ and $$ y $$ directions, we have
 
@@ -68,7 +68,7 @@ This equation is represented by the five-point stencil with the highlighted node
 
 Consider a $$ 1~\mathrm{m} \times 1~\mathrm{m} $$ grid divided into an equal number of elements $$ N_x = N_y = 4 $$ in both directions ($$ N_x+1 = N_y+1 = 5 $$ nodes in both directions) as shown in the figure below. The grid involves 25 nodes which are numbered as shown in the figure.
 
-![2D 4x4 grid](assets/images/2D_4x4_grid.png)
+![2D 4x4 grid](assets/images/2D_4x4_grid.png){: .center-image }
 
 Let's assume that the following boundary conditions are defined for the hydraulic head (in arbitrary units):
 
@@ -226,7 +226,7 @@ $$
 
 A two-dimensional color contour plot of this solution is shown in the figure below with 10 contour levels and and linear interpolation between neighboring nodes.
 
-![Solution for a 4x4 grid](assets/images/Solution_for_4x4_grid.png)
+![Solution for a 4x4 grid](assets/images/Solution_for_4x4_grid.png){: .center-image }
 
 #### **Solution for an $$ N_x \times N_y $$ grid**
 
