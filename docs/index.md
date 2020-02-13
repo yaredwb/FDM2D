@@ -166,7 +166,74 @@ $$
 \end{array} \right]   
 $$
 
-and $$ \textbf{O} $$ is a zero matrix. Solving the system of equations above gives the solution vector 
+and $$ \textbf{O} $$ is a zero matrix.
+
+The coefficient matrix $$ \bm A $$ is constructed in Python using various methods from the ```numpy``` and ```scipy``` modules. An excerpt from the code that builds the coefficient matrix is shown below.
+
+```python
+def buildCoeffMatrix(self):
+    '''
+    Constructs the coefficient matrix A of the final linear
+    system of equations of the form Ax = b
+    '''
+    # Create the diagonal, upper and lower components of B
+    Bdiag  = -4 * np.eye(self.Nx - 1)
+    Bupper = np.diag([1] * (self.Nx - 2), 1)
+    Blower = np.diag([1] * (self.Nx - 2), -1)
+
+    # Add components to create B
+    B = Bdiag + Bupper + Blower
+
+    # Create a block matrix where the diagonals are each B
+    Bs = [B] * (self.Nx - 1)
+    A  = lin.block_diag(*Bs)
+
+    # Create the identity diagonals
+    I = np.ones((self.Nx - 1) * (self.Nx - 2))
+    Iupper = np.diag(I, self.Nx - 1)
+    Ilower = np.diag(I, -self.Nx + 1)
+
+    # Add the identity diagonal to A to complete it
+    A += Iupper + Ilower
+
+    return A
+```
+
+The right hand side vector is constructed similarly.
+
+```python
+def buildRHSVector(self):
+    '''
+    Constructs the right hand side vector b of the final linear
+    system of equations of the form
+    '''
+    b = np.zeros((self.Nx - 1)**2)
+    b[-self.Nx+1:] = -self.h_top
+
+    return b
+```
+
+The final linear system is solved the ```linalg``` linear algebra module from ```scipy```.
+
+```python
+def solveLinearSystem(self, A, b):
+    '''
+    Solves the final linear system Ax = b and concatenates the
+    boundary conditions (BCs) to the solution
+    '''
+    # Solve for h vector and reshape array to 2D
+    h = lin.solve(A, b)
+    h = h.reshape((self.Nx - 1, self.Ny - 1))
+
+    # Create empty 2D array with all nodes and insert BCs ans solution
+    h2D  = np.zeros((self.Nx + 1, self.Ny + 1))
+    h2D[0] = self.h_top         # Insert top BC
+    h2D[1:-1,1:-1] = h[::-1]    # Insert solution (::-1 => inverted)
+
+    return h2D
+```
+
+Solving the system of equations above gives the solution vector 
 
 $$
 \left\lbrace 0.71 \;\; 0.98 \;\; 0.71 \;\; 1.88 \;\; 2.50 \;\; 1.88 \;\; 4.29 \;\; 5.27 \;\; 4.29  \right\rbrace^\intercal 
