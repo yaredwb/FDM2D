@@ -9,7 +9,7 @@ $$
 k_x \frac{\partial^2 h}{\partial x^2} + k_y \frac{\partial^2 h}{\partial y^2} = Q
 $$
 
-where $$ k_x $$ and $$ k_y $$ are the hydraulic conductivities in the $$ x $$ and $$ y $$ directions, respectively,  $$ h $$ is the hydraulic head and $$ Q $$ represents source/sink in the flow domain. If the permeability is assumed to be isotropic, i.e. $$ k_x = k_y = k $$, and if source/sink terms are ignored in the flow domain, we get 
+where $$ k_x $$ and $$ k_y $$ are the hydraulic conductivities in the $$ x $$ and $$ y $$ directions, respectively,  $$ h $$ is the hydraulic head and $$ Q $$ represents source/sink in the flow domain. If the permeability is assumed to be isotropic, i.e. $$ k_x = k_y = k $$, and if source/sink terms are ignored in the flow domain, we get
 
 $$
 \frac{\partial^2 h}{\partial x^2} + \frac{\partial^2 h}{\partial y^2} = 0
@@ -26,13 +26,13 @@ The first step is to spatially discretize the domain over which we aim to solve 
 This is achieved by dividing the $$ x $$ and $$ y $$ directions into $$ N_x $$ and $$ N_y $$ number of elements, where for a square domain we have $$ N = N_x = N_y $$. In general, if $$ L_x $$ and $$ L_y $$ represent the dimensions in the $$ x $$ and $$ y $$ directions, we have
 
 $$
-\Delta x = \frac{L_x}{N_x} \quad \text{and} \quad \Delta y = \frac{L_y}{N_y} 
+\Delta x = \frac{L_x}{N_x} \quad \text{and} \quad \Delta y = \frac{L_y}{N_y}
 $$
 
 The hydraulic head value at a given point in the domain, say $$ (x_i,y_j) $$, is represented by
 
 $$
-h(x_i,y_j) = h_{i,j}  
+h(x_i,y_j) = h_{i,j}
 $$
 
 for $$ i=0,1,\cdots,N_x $$ and $$ j=0,1,\cdots,N_y $$. The boundary conditions are specified on some edges of the domain. For example, if the head values are known to be $$ \bar{h}_1 $$ along $$ x=0 $$ and $$ x=L_x $$ and $$ \bar{h}_2 $$ along $$ y=0 $$ and $$ y=L_y $$, we write
@@ -92,7 +92,7 @@ The boundary conditions imply the hydraulic head values are $$ h = 0 $$ for node
   $$
 
 - For nodes 12, 13 and 14
-  
+
   $$
   \begin{align}
 	h_7 - 4h_{12} + h_{13} + h_{17} &= 0 \\
@@ -118,25 +118,25 @@ $$
 -4 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
 1 & -4 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
 0 & 1 & -4 & 0 & 0 & 1 & 0 & 0 & 0 \\
-\hline 
+\hline
 1 & 0 & 0 & 1 & -4 & 0 & 1 & 0 & 0 \\
 0 & 1 & 0 & 1 & -4 & 1 & 0 & 1 & 0 \\
 0 & 0 & 1 & 0 & 1 & -4 & 0 & 0 & 1 \\
 \hline
 0 & 0 & 0 & 1 & 0 & 0 & -4 & 1 & 0 \\
 0 & 0 & 0 & 0 & 1 & 0 & 1 & -4 & 1 \\
-0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & -4 \\   
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & -4 \\
 \end{array} \right]
 \left\lbrace
 \begin{matrix}
 h_7 \\ h_8 \\ h_9 \\ h_{12} \\ h_{13} \\ h_{14} \\ h_{17} \\ h_{18} \\ h_{19}
 \end{matrix}
-\right\rbrace = 
+\right\rbrace =
 \left\lbrace
 \begin{matrix}
 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ -10 \\ -10 \\ -10
 \end{matrix}
-\right\rbrace 
+\right\rbrace
 $$
 
 which is a linear system of the form $$ \bm A \bm x = \bm b $$. A closer inspection of the coefficient matrix $ \bm A $ shows that it has a block matrix structure of the form
@@ -147,8 +147,8 @@ $$
 \hline
 \bm I & \bm B & \bm I \\
 \hline
-\textbf{O} & \bm I & \bm B \\ 
-\end{array} \right] 
+\textbf{O} & \bm I & \bm B \\
+\end{array} \right]
 $$
 
 where
@@ -163,7 +163,7 @@ $$
 1 & 0 & 0 \\
 0 & 1 & 0 \\
 0 & 0 & 1
-\end{array} \right]   
+\end{array} \right]
 $$
 
 and $$ \textbf{O} $$ is a zero matrix.
@@ -171,7 +171,7 @@ and $$ \textbf{O} $$ is a zero matrix.
 The coefficient matrix $$ \bm A $$ is constructed in Python using various methods from the ```numpy``` and ```scipy``` modules. An excerpt from the code that builds the coefficient matrix is shown below.
 
 ```python
-def buildCoeffMatrix(self):    
+def buildCoeffMatrix(self):
     Bdiag  = -4 * np.eye(self.Nx - 1)
     Bupper = np.diag([1] * (self.Nx - 2), 1)
     Blower = np.diag([1] * (self.Nx - 2), -1)
@@ -197,19 +197,19 @@ def buildRHSVector(self):
 The final linear system is solved the ```linalg``` linear algebra module from ```scipy```.
 
 ```python
-def solveLinearSystem(self, A, b):    
+def solveLinearSystem(self, A, b):
     h = lin.solve(A, b)
-    h = h.reshape((self.Nx - 1, self.Ny - 1))    
+    h = h.reshape((self.Nx - 1, self.Ny - 1))
     h2D  = np.zeros((self.Nx + 1, self.Ny + 1))
-    h2D[0] = self.h_top         
-    h2D[1:-1,1:-1] = h[::-1]    
+    h2D[0] = self.h_top
+    h2D[1:-1,1:-1] = h[::-1]
     return h2D
 ```
 
-Solving the system of equations above gives the solution vector 
+Solving the system of equations above gives the solution vector
 
 $$
-\left\lbrace 0.71 \;\; 0.98 \;\; 0.71 \;\; 1.88 \;\; 2.50 \;\; 1.88 \;\; 4.29 \;\; 5.27 \;\; 4.29  \right\rbrace^\intercal 
+\left\lbrace 0.71 \;\; 0.98 \;\; 0.71 \;\; 1.88 \;\; 2.50 \;\; 1.88 \;\; 4.29 \;\; 5.27 \;\; 4.29  \right\rbrace^\intercal
 $$
 
 Combining these values with the boundary conditions, the final nodal hydraulic heads can be written in full as
@@ -220,8 +220,8 @@ $$
 0 & 4.29 & 5.27 & 4.29 & 0 \\
 0 & 1.88 & 2.50 & 1.88 & 0 \\
 0 & 0.71 & 0.98 & 0.71 & 0 \\
-0 & 0 & 0 & 0 & 0 
-\end{matrix} \right] 
+0 & 0 & 0 & 0 & 0
+\end{matrix} \right]
 $$
 
 A two-dimensional color contour plot of this solution is shown in the figure below with 10 contour levels and and linear interpolation between neighboring nodes.
@@ -262,7 +262,7 @@ $$
 \vdots & \ddots & \ddots & \ddots & \vdots \\
 \vdots &  & \ddots & 1 & 0 \\
 0 & \cdots & \cdots & 0 & 1
-\end{array} \right]   
+\end{array} \right]
 $$
 
 The right hand side vector $$ \bm b $$ will have a size of $$ (N_x-1)^2 $$ for this particular case. Following a similar node numbering convention as described earlier, the vector $$ \bm b $$ may be written as
