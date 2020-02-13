@@ -200,7 +200,7 @@ The final linear system is solved using the ```linalg``` linear algebra module f
 def solveLinearSystem(self, A, b):
     h = lin.solve(A, b)
     h = h.reshape((self.Nx - 1, self.Ny - 1))
-    h2D  = np.zeros((self.Nx + 1, self.Ny + 1))
+    h2D = np.zeros((self.Nx + 1, self.Ny + 1))
     h2D[0] = self.h_top
     h2D[1:-1,1:-1] = h[::-1]
     return h2D

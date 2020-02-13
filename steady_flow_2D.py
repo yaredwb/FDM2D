@@ -56,7 +56,7 @@ class FDMSteadyFlow2D:
     h = h.reshape((self.Nx - 1, self.Ny - 1))
 
     # Create empty 2D array with all nodes and insert BCs ans solution
-    h2D  = np.zeros((self.Nx + 1, self.Ny + 1))
+    h2D = np.zeros((self.Nx + 1, self.Ny + 1))
     h2D[0] = self.h_top         # Insert top BC
     h2D[1:-1,1:-1] = h[::-1]    # Insert solution (::-1 => inverted)
 

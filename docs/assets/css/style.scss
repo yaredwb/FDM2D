@@ -2,7 +2,7 @@
 ---
 
 @import "{{ site.theme }}";
-.center-image
+.center-image img + em
 {
   display: block;
   margin-left: auto;
