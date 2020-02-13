@@ -2,11 +2,12 @@
 ---
 
 @import "{{ site.theme }}";
-.center-image img + em
+img + em
 {
   display: block;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  font-size: 80%;
+  font-style: normal;
+  font-size: smaller;
 }
