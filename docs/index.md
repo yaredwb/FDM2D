@@ -9,7 +9,7 @@ $$
 k_x \frac{\partial^2 h}{\partial x^2} + k_y \frac{\partial^2 h}{\partial y^2} = Q
 $$
 
-where $$ k_x $$ and $$ k_y $$ are the hydraulic conductivities in the $$ x $$ and $$ y $$ directions, respectively,  $$ h $$ is the hydraulic head and $$ Q $$ represents source/sink in the flow domain. If the permeability is assumed to be isotropic, i.e. $$ k_x = k_y = k $$, and if source/sink terms are ignored in the flow domain, we get
+where $$ k_x $$ and $$ k_y $$ are the hydraulic conductivities in the $$ x $$ and $$ y $$ directions, respectively,  $$ h $$ is the hydraulic head and $$ Q $$ represents source/sink in the flow domain. If the hydraulic conductivity is assumed to be isotropic, i.e. $$ k_x = k_y = k $$, and if source/sink terms are ignored in the flow domain, we get
 
 $$
 \frac{\partial^2 h}{\partial x^2} + \frac{\partial^2 h}{\partial y^2} = 0
@@ -139,7 +139,7 @@ h_7 \\ h_8 \\ h_9 \\ h_{12} \\ h_{13} \\ h_{14} \\ h_{17} \\ h_{18} \\ h_{19}
 \right\rbrace
 $$
 
-which is a linear system of the form $$ \mathbf A \mathbf x = \mathbf b $$. A closer inspection of the coefficient matrix $ \mathbf A $ shows that it has a block matrix structure of the form
+which is a linear system of the form $$ \mathbf A \mathbf x = \mathbf b $$. A closer inspection of the coefficient matrix $$ \mathbf A $$ shows that it has a block matrix structure of the form
 
 $$
 \left[ \begin{array}{c|c|c}
@@ -289,11 +289,11 @@ def plotSolution(self, h2D):
     plt.ylabel(r'$y$ [$\mathrm{m}$]')
 ```
 
-![Solution for a 10x10 grid](assets/images/Solution_for_10x10_grid.png)
+![Solution for a 10x10 grid](assets/images/Solution_for_10x10_grid.png){: .center-image }
 *Solution for $$N_x=N_y=10$$*
 
-![Solution for a 50x50 grid](assets/images/Solution_for_50x50_grid.png)
+![Solution for a 50x50 grid](assets/images/Solution_for_50x50_grid.png){: .center-image }
 *Solution for $$N_x=N_y=50$$*
 
-![Solution for a 100x100 grid](assets/images/Solution_for_100x100_grid.png)
+![Solution for a 100x100 grid](assets/images/Solution_for_100x100_grid.png){: .center-image }
 *Solution for $$N_x=N_y=100$$*
