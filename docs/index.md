@@ -139,27 +139,27 @@ h_7 \\ h_8 \\ h_9 \\ h_{12} \\ h_{13} \\ h_{14} \\ h_{17} \\ h_{18} \\ h_{19}
 \right\rbrace
 $$
 
-which is a linear system of the form $$ \bm A \bm x = \bm b $$. A closer inspection of the coefficient matrix $ \bm A $ shows that it has a block matrix structure of the form
+which is a linear system of the form $$ \mathbf A \mathbf x = \mathbf b $$. A closer inspection of the coefficient matrix $ \mathbf A $ shows that it has a block matrix structure of the form
 
 $$
 \left[ \begin{array}{c|c|c}
-\bm B & \bm I & \textbf{O} \\
+\mathbf B & \mathbf I & \textbf{O} \\
 \hline
-\bm I & \bm B & \bm I \\
+\mathbf I & \mathbf B & \mathbf I \\
 \hline
-\textbf{O} & \bm I & \bm B \\
+\textbf{O} & \mathbf I & \mathbf B \\
 \end{array} \right]
 $$
 
 where
 
 $$
-\bm B = \left[ \begin{array}{ccc}
+\mathbf B = \left[ \begin{array}{ccc}
 -4 & 1 & 0 \\
 1 & -4 & 1 \\
 0 & 1 & -4
 \end{array} \right] \qquad \text{and} \qquad
-\bm I = \left[ \begin{array}{ccc}
+\mathbf I = \left[ \begin{array}{ccc}
 1 & 0 & 0 \\
 0 & 1 & 0 \\
 0 & 0 & 1
@@ -168,7 +168,7 @@ $$
 
 and $$ \textbf{O} $$ is a zero matrix.
 
-The coefficient matrix $$ \bm A $$ is constructed in Python using various methods from the ```numpy``` and ```scipy``` modules. An excerpt from the code that builds the coefficient matrix is shown below.
+The coefficient matrix $$ \mathbf A $$ is constructed in Python using various methods from the ```numpy``` and ```scipy``` modules. An excerpt from the code that builds the coefficient matrix is shown below.
 
 ```python
 def buildCoeffMatrix(self):
@@ -194,7 +194,7 @@ def buildRHSVector(self):
     return b
 ```
 
-The final linear system is solved the ```linalg``` linear algebra module from ```scipy```.
+The final linear system is solved using the ```linalg``` linear algebra module from ```scipy```.
 
 ```python
 def solveLinearSystem(self, A, b):
@@ -230,33 +230,33 @@ A two-dimensional color contour plot of this solution is shown in the figure bel
 
 #### **Solution for an $$ N_x \times N_y $$ grid**
 
-In general, we want to obtain a solution on an arbitrarily discretized grid. Let the domain be discretized into $$ N_x \times N_y $$ elements ($$ (N_x + 1) \times (N_y + 1) $$ nodes) where $$ N_x $$ and $$ N_y $$ are chosen such that $$ \Delta x = \Delta y $$ i.e. a uniform grid. The coefficient matrix $$ \bm A $$ will have a similar block structure as described in the previous section but with more element matrices $$ \bm B $$ and $$ \bm I $$. The size of matrix $$ \bm A $$ will be $$ (N_x-1)^2 \times (N_y-1)^2 $$ and its block form may be written as
+In general, we want to obtain a solution on an arbitrarily discretized grid. Let the domain be discretized into $$ N_x \times N_y $$ elements ($$ (N_x + 1) \times (N_y + 1) $$ nodes) where $$ N_x $$ and $$ N_y $$ are chosen such that $$ \Delta x = \Delta y $$ i.e. a uniform grid. The coefficient matrix $$ \mathbf A $$ will have a similar block structure as described in the previous section but with more element matrices $$ \mathbf B $$ and $$ \mathbf I $$. The size of matrix $$ \mathbf A $$ will be $$ (N_x-1)^2 \times (N_y-1)^2 $$ and its block form may be written as
 
 $$
-\bm A = \left[ \begin{array}{c|c|c|c|c}
-\bm B & \bm I & \textbf{O} & \cdots & \textbf{O} \\
+\mathbf A = \left[ \begin{array}{c|c|c|c|c}
+\mathbf B & \mathbf I & \textbf{O} & \cdots & \textbf{O} \\
 \hline
-\bm I & \bm B & \bm I & \ddots & \vdots \\
+\mathbf I & \mathbf B & \mathbf I & \ddots & \vdots \\
 \hline
-\textbf{O} & \bm I & \ddots & \ddots & \textbf{O} \\
+\textbf{O} & \mathbf I & \ddots & \ddots & \textbf{O} \\
 \hline
-\vdots & \ddots & \ddots & \bm B & \bm I \\
+\vdots & \ddots & \ddots & \mathbf B & \mathbf I \\
 \hline
-\textbf{O} & \cdots & \textbf{O} & \bm I & \bm B \\
+\textbf{O} & \cdots & \textbf{O} & \mathbf I & \mathbf B \\
 \end{array} \right]
 $$
 
-The sizes of the matrices $$ \bm B $$ and $$ \bm I $$ change depending on the selected $$ N_x $$ and $$ N_y $$ values. For the particular example considered here where the boundary conditions are known along the four boundaries, the matrices $$ \bm B $$ and $$ \bm I $$ will have sizes of $$ (N_x - 1) \times (N_y - 1) $$ and may be written as
+The sizes of the matrices $$ \mathbf B $$ and $$ \mathbf I $$ change depending on the selected $$ N_x $$ and $$ N_y $$ values. For the particular example considered here where the boundary conditions are known along the four boundaries, the matrices $$ \mathbf B $$ and $$ \mathbf I $$ will have sizes of $$ (N_x - 1) \times (N_y - 1) $$ and may be written as
 
 $$
-\bm B = \left[ \begin{array}{ccccc}
+\mathbf B = \left[ \begin{array}{ccccc}
 -4 & 1 & 0 & \cdots & 0 \\
 1 & -4 & 1 & \ddots  & \vdots  \\
 0 & \ddots & \ddots & \ddots & 0 \\
 \vdots & \ddots & 1 & -4 & 1 \\
 0 & \cdots & 0 & 1 & -4
 \end{array} \right] \quad \text{and} \quad
-\bm I = \left[ \begin{array}{ccccc}
+\mathbf I = \left[ \begin{array}{ccccc}
 1 & 0 & \cdots & \cdots & 0 \\
 0 & 1 & \ddots &  & \vdots \\
 \vdots & \ddots & \ddots & \ddots & \vdots \\
@@ -265,18 +265,35 @@ $$
 \end{array} \right]
 $$
 
-The right hand side vector $$ \bm b $$ will have a size of $$ (N_x-1)^2 $$ for this particular case. Following a similar node numbering convention as described earlier, the vector $$ \bm b $$ may be written as
+The right hand side vector $$ \mathbf b $$ will have a size of $$ (N_x-1)^2 $$ for this particular case. Following a similar node numbering convention as described earlier, the vector $$ \mathbf b $$ may be written as
 
 $$
-\bm b = \left\lbrace \begin{matrix}
+\mathbf b = \left\lbrace \begin{matrix}
 0 & 0 & \cdots & 0 & -10 & \cdots & -10
 \end{matrix} \right\rbrace^\intercal
 $$
 
-where $$ (N_x + 1) $$ nodes at the top boundary have a hydraulic head value of $$ h=10 $$. With $$ \bm A $$ and $$ \bm b $$ constructed for given $$ N_x $$ and $$ N_y $$ values, the linear system can be solved for the hydraulic heads at the unknown nodes. The follwing figures show the color contour plots for grid sizes of $ 10 \times 10 $, $ 50 \times 50 $ and $ 100 \times 100 $, respectively.
+where $$ (N_x + 1) $$ nodes at the top boundary have a hydraulic head value of $$ h=10 $$. With $$ \mathbf A $$ and $$ \mathbf b $$ constructed for given $$ N_x $$ and $$ N_y $$ values, the linear system can be solved for the hydraulic heads at the unknown nodes. The follwing figures show the color contour plots for grid sizes of $$ 10 \times 10 $$, $$ 50 \times 50 $$ and $$ 100 \times 100 $$, respectively.
+
+We use ```matplotlib``` to plot the final solution on a 2D meshgrid.
+
+```python
+def plotSolution(self, h2D):
+    x = np.linspace(0, 1, self.Nx + 1)
+    y = np.linspace(1, 0, self.Ny + 1)
+    X, Y = np.meshgrid(x, y)
+    matplotlib.rcParams['figure.figsize'] = 6.2, 5
+    plt.contourf(X, Y, h2D, 10)
+    plt.colorbar()
+    plt.xlabel(r'$x$ [$\mathrm{m}$]')
+    plt.ylabel(r'$y$ [$\mathrm{m}$]')
+```
 
 ![Solution for a 10x10 grid](assets/images/Solution_for_10x10_grid.png)
+*Solution for $$N_x=N_y=10$$*
 
 ![Solution for a 50x50 grid](assets/images/Solution_for_50x50_grid.png)
+*Solution for $$N_x=N_y=50$$*
 
 ![Solution for a 100x100 grid](assets/images/Solution_for_100x100_grid.png)
+*Solution for $$N_x=N_y=100$$*
