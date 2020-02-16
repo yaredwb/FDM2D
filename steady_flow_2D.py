@@ -1,3 +1,7 @@
+'''
+@author: Yared W. Bekele
+'''
+
 import numpy as np
 import matplotlib
 import scipy.linalg as lin
