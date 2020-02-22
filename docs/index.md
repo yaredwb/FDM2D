@@ -145,19 +145,19 @@ $$
 which is a linear system of the form $$ \mathbf A \mathbf x = \mathbf b $$. A closer inspection of the coefficient matrix $$ \mathbf A $$ shows that it has a block matrix structure of the form
 
 $$
-\left[ \begin{array}{c|c|c}
-\mathbf B & \mathbf I & \textbf{O} \\
+\mathbf A =\left[ \begin{array}{c|c|c}
+\mathbf D & \mathbf I & \textbf{O} \\
 \hline
-\mathbf I & \mathbf B & \mathbf I \\
+\mathbf I & \mathbf D & \mathbf I \\
 \hline
-\textbf{O} & \mathbf I & \mathbf B \\
+\textbf{O} & \mathbf I & \mathbf D \\
 \end{array} \right]
 $$
 
 where
 
 $$
-\mathbf B = \left[ \begin{array}{ccc}
+\mathbf D = \left[ \begin{array}{ccc}
 -4 & 1 & 0 \\
 1 & -4 & 1 \\
 0 & 1 & -4
@@ -171,16 +171,16 @@ $$
 
 and $$ \textbf{O} $$ is a zero matrix.
 
-The coefficient matrix $$ \mathbf A $$ is constructed in Python using various methods from the ```numpy``` and ```scipy``` modules. An excerpt from the code that builds the coefficient matrix is shown below.
+The coefficient matrix $$ \mathbf A $$ is constructed in Python using various methods from the `numpy` and `scipy` modules. An excerpt from the code that builds the coefficient matrix is shown below.
 
 ```python
 def buildCoeffMatrix(self):
-    Bdiag  = -4 * np.eye(self.Nx - 1)
-    Bupper = np.diag([1] * (self.Nx - 2), 1)
-    Blower = np.diag([1] * (self.Nx - 2), -1)
-    B = Bdiag + Bupper + Blower
-    Bs = [B] * (self.Nx - 1)
-    A  = lin.block_diag(*Bs)
+    Ddiag  = -4 * np.eye(self.Nx - 1)
+    Dupper = np.diag([1] * (self.Nx - 2), 1)
+    Dlower = np.diag([1] * (self.Nx - 2), -1)
+    D = Bdiag + Bupper + Blower
+    Ds = [D] * (self.Nx - 1)
+    A  = lin.block_diag(*Ds)
     I = np.ones((self.Nx - 1) * (self.Nx - 2))
     Iupper = np.diag(I, self.Nx - 1)
     Ilower = np.diag(I, -self.Nx + 1)
@@ -197,7 +197,7 @@ def buildRHSVector(self):
     return b
 ```
 
-The final linear system is solved using the ```linalg``` linear algebra module from ```scipy```.
+The final linear system is solved using the `linalg` linear algebra module from `scipy`.
 
 ```python
 def solveLinearSystem(self, A, b):
@@ -238,22 +238,22 @@ In general, we want to obtain a solution on an arbitrarily discretized grid. Let
 
 $$
 \mathbf A = \left[ \begin{array}{c|c|c|c|c}
-\mathbf B & \mathbf I & \textbf{O} & \cdots & \textbf{O} \\
+\mathbf D & \mathbf I & \textbf{O} & \cdots & \textbf{O} \\
 \hline
-\mathbf I & \mathbf B & \mathbf I & \ddots & \vdots \\
+\mathbf I & \mathbf D & \mathbf I & \ddots & \vdots \\
 \hline
 \textbf{O} & \mathbf I & \ddots & \ddots & \textbf{O} \\
 \hline
-\vdots & \ddots & \ddots & \mathbf B & \mathbf I \\
+\vdots & \ddots & \ddots & \mathbf D & \mathbf I \\
 \hline
-\textbf{O} & \cdots & \textbf{O} & \mathbf I & \mathbf B \\
+\textbf{O} & \cdots & \textbf{O} & \mathbf I & \mathbf D \\
 \end{array} \right]
 $$
 
 The sizes of the matrices $$ \mathbf B $$ and $$ \mathbf I $$ change depending on the selected $$ N_x $$ and $$ N_y $$ values. For the particular example considered here where the boundary conditions are known along the four boundaries, the matrices $$ \mathbf B $$ and $$ \mathbf I $$ will have sizes of $$ (N_x - 1) \times (N_y - 1) $$ and may be written as
 
 $$
-\mathbf B = \left[ \begin{array}{ccccc}
+\mathbf D = \left[ \begin{array}{ccccc}
 -4 & 1 & 0 & \cdots & 0 \\
 1 & -4 & 1 & \ddots  & \vdots  \\
 0 & \ddots & \ddots & \ddots & 0 \\
@@ -279,7 +279,7 @@ $$
 
 where $$ (N_x + 1) $$ nodes at the top boundary have a hydraulic head value of $$ h=10 $$. With $$ \mathbf A $$ and $$ \mathbf b $$ constructed for given $$ N_x $$ and $$ N_y $$ values, the linear system can be solved for the hydraulic heads at the unknown nodes. The follwing figures show the color contour plots for grid sizes of $$ 10 \times 10 $$, $$ 50 \times 50 $$ and $$ 100 \times 100 $$, respectively.
 
-We use ```matplotlib``` to plot the final solution on a 2D meshgrid.
+We use `matplotlib` to plot the final solution on a 2D meshgrid.
 
 ```python
 def plotSolution(self, h2D):
