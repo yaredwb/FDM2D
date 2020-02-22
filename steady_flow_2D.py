@@ -19,16 +19,16 @@ class FDMSteadyFlow2D:
     system of equations of the form Ax = b
     '''
     # Create the diagonal, upper and lower components of B
-    Bdiag  = -4 * np.eye(self.Nx - 1)
-    Bupper = np.diag([1] * (self.Nx - 2), 1)
-    Blower = np.diag([1] * (self.Nx - 2), -1)
+    Ddiag  = -4 * np.eye(self.Nx - 1)
+    Dupper = np.diag([1] * (self.Nx - 2), 1)
+    Dlower = np.diag([1] * (self.Nx - 2), -1)
 
     # Add components to create B
-    B = Bdiag + Bupper + Blower
+    D = Ddiag + Dupper + Dlower
 
     # Create a block matrix where the diagonals are each B
-    Bs = [B] * (self.Nx - 1)
-    A  = lin.block_diag(*Bs)
+    Ds = [D] * (self.Nx - 1)
+    A  = lin.block_diag(*Ds)
 
     # Create the identity diagonals
     I = np.ones((self.Nx - 1) * (self.Nx - 2))
