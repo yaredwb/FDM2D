@@ -43,7 +43,7 @@ class FDMSteadyFlow2D:
   def buildRHSVector(self):
     '''
     Constructs the right hand side vector b of the final linear
-    system of equations of the form
+    system of equations of the form Ax = b
     '''
     b = np.zeros((self.Nx - 1)**2)
     b[-self.Nx+1:] = -self.h_top
