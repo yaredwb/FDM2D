@@ -2,6 +2,8 @@
 layout: default
 title: Finite Difference Method
 ---
+Code and excerpt from lecture notes demonstrating application of the finite difference method (FDM) to steady-state flow in two dimensions. The extracted lecture note is taken from a course I taught entitled Advanced Computational Methods in Geotechnical Engineering.
+
 ### **Governing Equation**
 
 Steady-state groundwater flow in two-dimensions is governed by the differential equation
